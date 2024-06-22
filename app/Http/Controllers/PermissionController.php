@@ -42,7 +42,7 @@ class PermissionController extends Controller
         if(Permission::create(['name' => $request->input('name')])){
             $response['message'] = 'This permission name <strong>'.$request->input('name').'</strong> was created successfully.';
             $response['next'] = true;
-            $response['view'] = view('systems.permissions.ajax.table_permission_list', ['permissions' => Permission::all()])->render();
+            $response['view'] = view('systems.permissions.ajax.table_permission_list', ['data' => Permission::all()])->render();
         }
 
         return json_encode($response);
