@@ -15,9 +15,9 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permissions = Permission::all();
+        $data = Permission::all();
         
-        return view('systems.permissions.index', compact('permissions'));
+        return view('systems.permissions.index', compact('data'));
     }
 
     /**
@@ -25,7 +25,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        return view('systems.permissions.create');
+        //
     }
 
     /**
@@ -86,7 +86,7 @@ class PermissionController extends Controller
         if(Permission::where('id', $id)->update(['name' => $request->input('name')])){
             $response['message'] = 'The rgistry was updated successfully.';
             $response['next'] = true;
-            $response['view'] = view('systems.permissions.ajax.table_permission_list', ['permissions' => Permission::all()])->render();
+            $response['view'] = view('systems.permissions.ajax.table_permission_list', ['data' => Permission::all()])->render();
         }
 
         return json_encode($response);
@@ -116,7 +116,7 @@ class PermissionController extends Controller
             if(Permission::where('id', $id)->update(['status_alta' => $new_status])){
                 $response['message'] = $new_message;
                 $response['next'] = true;
-                $response['view'] = view('systems.permissions.ajax.table_permission_list', ['permissions' => Permission::all()])->render();
+                $response['view'] = view('systems.permissions.ajax.table_permission_list', ['data' => Permission::all()])->render();
             }
         }
 

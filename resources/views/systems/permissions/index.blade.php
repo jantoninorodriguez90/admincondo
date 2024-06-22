@@ -41,7 +41,7 @@
                     <th>ACTIONS</th>
                 </tr>
             </x-slot:thead>
-            @foreach ($permissions as $item)
+            @foreach ($data as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->name }}</td>

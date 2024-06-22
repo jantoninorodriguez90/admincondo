@@ -1,5 +1,5 @@
-<x-data-table>
-    <x-slot:title>permisons list</x-slot:title>
+<x-data-table>            
+    <x-slot:title>roles list</x-slot:title>
     {{-- <x-slot:navigate>
         <a href="{{ route('permissions.create') }}" class="btn btn-info float-right">NEW PERMISSION</a>
     </x-slot:navigate> --}}
@@ -20,6 +20,10 @@
             <td>{{ $item->created_at }}</td>
             <td class="text-center">
                 <button type="button" class="btn btn-xs btn-info" onclick="btn_edit({{ $item->id }})"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button>
+                <x-modal type="lg" class="btn btn-xs btn-info" onclick="btn_show({{ $item->id }})">
+                    <x-slot:button><i class="fa fa-eye" aria-hidden="true"></i></x-slot:button>    
+                    <x-slot:title>PERMISSION</x-slot:title>                              
+                </x-modal>
                 @if ($item->status_alta == 1)
                     <button type="button" class="btn btn-xs btn-success" onclick="btn_delete({{ $item->id }})"><i class="fa fa-check" aria-hidden="true"></i></button>
                 @else
