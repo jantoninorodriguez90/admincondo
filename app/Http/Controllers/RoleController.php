@@ -51,7 +51,7 @@ class RoleController extends Controller
             $request->input('permission')
         );
         
-        $role = Role::create(['name' => $request->input('name')]);
+        $role = Role::create(['name' => $request->input('name'), 'guard_name' => 'web']);
         if($role != ""){
             $role->syncPermissions($permissionsID);
             $response['message'] = 'This role name <strong>'.$request->input('name').'</strong> was created successfully.';

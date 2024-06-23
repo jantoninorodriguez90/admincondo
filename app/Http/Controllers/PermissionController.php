@@ -95,7 +95,7 @@ class PermissionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id) 
     {
         $response = ['message' => 'It is not possible to deactivate this register.', 'next' => false];
         
