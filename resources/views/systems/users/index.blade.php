@@ -32,7 +32,7 @@
                 <label for="name" class="col-sm-2 col-form-label">PASSWORD CONFIRMATION</label>
                 <div class="col-sm-10">
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="PASSWORD CONFIRMATION">
-                    <div id="message_error_confirm" class="invalid-feedback"></div>
+                    <div id="message_error_password_confirmation" class="invalid-feedback"></div>
                 </div>
             </div>
         </div>
@@ -93,7 +93,9 @@
         localstorage_function('remove', 'LS_USER_DATA');
         $('#btnUpdate').css('display', 'none');
 
-        input_validation();
+        input_validation([
+            item: ['name', 'email', 'password', 'confirm']
+        ]);
     });
 
     function btn_create(){
@@ -245,51 +247,6 @@
         }
 
         return false;
-    }
-
-    function input_validation(){
-        $('#message_error_name, #message_error_email, #message_error_password, #message_error_confirm').css('display', 'none');
-
-        $('#name').on( "input", function() {
-            if($(this).val() != ""){
-                $(this).removeClass('is-invalid');
-                $('#message_error_name').css('display', 'none');
-            }else{
-                $(this).addClass('is-invalid');
-                $('#message_error_name').css('display', 'inline');
-                $('#message_error_name').html('You must type a name.');
-            }
-        });
-
-        $('#email').on( "input", function() {
-            if($(this).val() != ""){
-                $(this).removeClass('is-invalid');
-                $('#message_error_email').css('display', 'none');
-            }else{
-                $(this).addClass('is-invalid');
-                $('#message_error_email').css('display', 'inline');
-                $('#message_error_email').html('You must type an email.');
-            }
-        });
-
-        $('#password').on( "input", function() {
-            if($(this).val() != ""){
-                $(this).removeClass('is-invalid');
-                $('#message_error_password').css('display', 'none');
-            }else{
-                $(this).addClass('is-invalid');
-                $('#message_error_password').css('display', 'inline');
-                $('#message_error_password').html('You must type a password.');
-            }
-        });
-
-        $("#password_confirmation").on( "input", function() {            
-            if($(this).val() == $('#password').val()){
-                $(this).removeClass("is-invalid").addClass("is-valid");
-            }else{
-                $(this).removeClass("is-valid").addClass("is-invalid");
-            }
-        });
     }
 </script>
 @endsection

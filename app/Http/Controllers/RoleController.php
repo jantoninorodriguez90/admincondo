@@ -129,8 +129,7 @@ class RoleController extends Controller
             $permissionsID = array_map(
                 function($value) { return (int)$value; },
                 $request->input('permission')
-            );
-        
+            );            
             $role->syncPermissions($permissionsID);
             
             $response['message'] = 'The rgistry was updated successfully.';

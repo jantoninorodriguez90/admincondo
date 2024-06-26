@@ -39,7 +39,7 @@ class PermissionController extends Controller
             'name' => 'required|unique:permissions,name'
         ]);
         
-        if(Permission::create(['name' => $request->input('name')])){
+        if(Permission::create(['name' => $request->input('name'), 'guard_name' => 'web'])){
             $response['message'] = 'This permission name <strong>'.$request->input('name').'</strong> was created successfully.';
             $response['next'] = true;
             $response['view'] = view('systems.permissions.ajax.table_permission_list', ['data' => Permission::all()])->render();
