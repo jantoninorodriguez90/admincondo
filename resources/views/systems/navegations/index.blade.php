@@ -104,26 +104,32 @@
     });
 
     function btn_create_seccion(){
-        ajax_function_object({
-            method: 'POST',
-            route: `{{ route('navegations.seccion.store') }}`,
-            data: {
-                form: $('#form-create-seccion')
-            },
-            function: (_response) => {
-                if(_response.next){
-                    bootbox_alert({
-                        title: 'informative',
-                        message: _response.message,
-                        type: 'success'
-                    });
-                                        
-                    form_clear('form-create-seccion');        
-                    $('#div_show_icon').html("");
-                    $('#datatable-menu-list').html(_response.view);       
-                }
-            }
+        let _next = form_validation({
+            item: ['value', 'icon', 'sistema']
         });
+
+        if(_next){
+            ajax_function_object({
+                method: 'POST',
+                route: `{{ route('navegations.seccion.store') }}`,
+                data: {
+                    form: $('#form-create-seccion')
+                },
+                function: (_response) => {
+                    if(_response.next){
+                        bootbox_alert({
+                            title: 'informative',
+                            message: _response.message,
+                            type: 'success'
+                        });
+                                            
+                        form_clear('form-create-seccion');        
+                        $('#div_show_icon').html("");
+                        $('#datatable-menu-list').html(_response.view);       
+                    }
+                }
+            });
+        }        
     } 
 
     function btn_edit_seccion(_id){
@@ -149,8 +155,11 @@
 
     function btn_update_seccion(){
         let _ls_id = localstorage_function('get', 'LS_NAVIGATION_DATA');
+        let _next = form_validation({
+            item: ['value', 'icon', 'sistema']
+        });
 
-        if(_ls_id != ""){
+        if(_next != ""){
             ajax_function_object({
                 method: 'PUT',
                 route: `${_ls_id}/seccion`,
@@ -197,20 +206,6 @@
                 }                
             }
         });
-    }
-
-    function form_validation(){
-        if($('#name').val() != "" && $('#email').val() != "" && $('#password').val() != ""){            
-            if($('#password').val() == $('#password_confirmation').val()) return true;                     
-        }else{
-            $("#name, #email, #password").removeClass("is-valid").addClass("is-invalid");
-            $('#message_error_name, #message_error_email, #message_error_password').css('display', 'inline');
-            $('#message_error_name').html('You must type a name.');
-            $('#message_error_email').html('You must type an email.');
-            $('#message_error_password').html('You must type a password.');
-        }
-
-        return false;
     }
 </script>
 @endsection

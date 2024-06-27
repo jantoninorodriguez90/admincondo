@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
-class SysSeccion extends Model
+class SYSSeccion extends Model
 {
     use HasFactory;
     

@@ -415,5 +415,27 @@ $(document).ready(function () {
         }
     }
 
+    window.form_validation = function (data = { item: [] }) {
+        // ESTO VA DEBAJO DEL INPUT A VALIDAR
+        // <div id="message_error_sistema" class="invalid-feedback"></div>
+        let _array_true = [];
+
+        if (data.item.length > 0) {
+            data.item.forEach((element) => {
+                if ($('#' + element).val() != "") {
+                    _array_true.push(1);
+                } else {
+                    $("#" + element).removeClass("is-valid").addClass("is-invalid");
+                    $('#message_error_' + element).css('display', 'inline');
+                    $('#message_error_' + element).html('You must type a ' + element);
+                }
+            });
+
+            return (_array_true.length == data.item.length) ? true : false;
+        } else {
+            console.log('NESECITA RECIBIR LOS SIGUIENTES PARAMETROS: { item: [] }');
+        }
+    }
+
 });
 

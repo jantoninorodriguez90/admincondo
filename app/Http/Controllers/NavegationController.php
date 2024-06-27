@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use App\Models\SysSeccion;
+use App\Models\SYSSeccion;
 
 class NavegationController extends Controller
 {
@@ -14,7 +14,7 @@ class NavegationController extends Controller
      * Display a listing of the resource.
      */
     public function index(){
-        $secciones = SysSeccion::all();
+        $secciones = SYSSeccion::all();
         
         return view('systems.navegations.index', ['secciones' => $secciones]);
     }
@@ -22,16 +22,16 @@ class NavegationController extends Controller
     public function store_seccion(Request $request){
         $response = ['message' => 'It had a problem to create this user.', 'next' => false];        
         $this->validate($request, [
-            'value' => 'required|unique',
+            'value' => 'required',
             'icon' => 'required',
             'sistema' => 'required'
         ]);
     
             
-        if(SysSeccion::create($request->all())){
+        if(SYSSeccion::create($request->all())){
             $response['next'] = true;
             $response['message'] = 'The menu '.$request->input('value').' was created successfully.';
-            $response['view'] = view('systems.navegations.ajax.table_seccion_list', ['secciones' => SysSeccion::all()])->render();
+            $response['view'] = view('systems.navegations.ajax.table_seccion_list', ['secciones' => SYSSeccion::all()])->render();
         }
         return json_encode($response);
     }
@@ -39,7 +39,7 @@ class NavegationController extends Controller
     public function edit_seccion(string $id){
         $response = ['message' => 'This menu does not found.', 'next' => false];
 
-        $encontrado = SysSeccion::find($id);
+        $encontrado = SYSSeccion::find($id);
         if(!empty($encontrado)){
             $response['data'] = $encontrado;
             $response['next'] = true;
@@ -51,10 +51,10 @@ class NavegationController extends Controller
     public function update_seccion(Request $request, string $id){
         $response = ['message' => 'There was a problem saving this menu.', 'next' => false];
         
-        if(SysSeccion::where('id', $id)->update($request->except(['_token']))){
+        if(SYSSeccion::where('id', $id)->update($request->except(['_token']))){
             $response['message'] = 'The registry was updated successfully.';
             $response['next'] = true;
-            $response['view'] = view('systems.navegations.ajax.table_seccion_list', ['secciones' => SysSeccion::all()])->render();
+            $response['view'] = view('systems.navegations.ajax.table_seccion_list', ['secciones' => SYSSeccion::all()])->render();
         }
 
         return json_encode($response);
@@ -64,7 +64,7 @@ class NavegationController extends Controller
         $response = ['message' => 'It is not possible to deactivate this register.', 'next' => false];
         
         if($id != ""){
-            $user = SysSeccion::find($id);
+            $user = SYSSeccion::find($id);
             $new_status = 0;
             $new_message = "";
             switch ($user->status_alta) {
@@ -77,10 +77,10 @@ class NavegationController extends Controller
                     $new_message = "This register was deactivate.";
                     break;
             }
-            if(SysSeccion::where('id', $id)->update(['status_alta' => $new_status])){
+            if(SYSSeccion::where('id', $id)->update(['status_alta' => $new_status])){
                 $response['message'] = $new_message;
                 $response['next'] = true;
-                $response['view'] = view('systems.navegations.ajax.table_seccion_list', ['secciones' => SysSeccion::all()])->render();
+                $response['view'] = view('systems.navegations.ajax.table_seccion_list', ['secciones' => SYSSeccion::all()])->render();
             }
         }
 
