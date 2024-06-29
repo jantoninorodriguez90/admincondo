@@ -18,7 +18,10 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-        <table id="example1" class="table table-bordered table-striped">
+        @php
+            if(empty($id)) $id = "example1";
+        @endphp
+        <table id="{{ $id }}" class="table table-bordered table-striped">
             <thead>
                 {{ $thead }}
             </thead>
@@ -50,20 +53,20 @@
 
 <script>
     $(function () {
-        $("#example1").DataTable({
+        $("#{{ $id }}").DataTable({
             "responsive": true, "lengthChange": false, "autoWidth": false,
             // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             "buttons": ["excel", "pdf", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        }).buttons().container().appendTo('#{{ $id }}_wrapper .col-md-6:eq(0)');
 
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-        });
+        // $('#example2').DataTable({
+        //     "paging": true,
+        //     "lengthChange": false,
+        //     "searching": false,
+        //     "ordering": true,
+        //     "info": true,
+        //     "autoWidth": false,
+        //     "responsive": true,
+        // });
     });
 </script>
