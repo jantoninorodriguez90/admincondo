@@ -28,15 +28,21 @@ class NavegationController extends Controller
     // ################################################################################
     // FUNCIONES DE SECCIONES
     public function store_seccion(Request $request){
-        $response = ['message' => 'It had a problem to create this section.', 'next' => false];        
+        $response = ['message' => 'It had a problem to create this section.', 'next' => false];                
+        $input = [];
         $this->validate($request, [
-            'value' => 'required',
-            'icon' => 'required',
-            'sistema' => 'required'
-        ]);
-    
-            
-        if(SYSSeccion::create($request->all())){
+            'value_seccion' => 'required',
+            'icon_seccion'  => 'required',
+            'sistema'  => 'required'
+        ]);        
+        // LIMPIAREMOS EL ARREGLO ANTES DE GUARDAR        
+        $input = [
+            'value' => $request->input('value_seccion'),
+            'icon' => $request->input('icon_seccion'),
+            'sistema' => $request->input('sistema'),
+        ];
+      
+        if(SYSSeccion::create($input)){
             $response['next'] = true;
             $response['message'] = 'The menu '.$request->input('value').' was created successfully.';
             $response['view'] = view('systems.navegations.ajax.table_seccion_list', ['secciones' => SYSSeccion::all()])->render();

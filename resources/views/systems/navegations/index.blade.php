@@ -208,7 +208,7 @@
     // FUNCIONES DE SECCIONES
     function btn_create_seccion(){
         let _next = form_validation({
-            item: ['value', 'icon', 'sistema']
+            item: ['value_seccion', 'icon_seccion', 'sistema']
         });
 
         if(_next){
@@ -216,7 +216,7 @@
                 method: 'POST',
                 route: `{{ route('navegations.seccion.store') }}`,
                 data: {
-                    form: $('#form-create-modulo')
+                    form: $('#form-create-seccion')
                 },
                 function: (_response) => {
                     if(_response.next){
@@ -246,10 +246,10 @@
                     $('#btnCreate').css('display', 'none');
                     $('#btnUpdate').css('display', 'inline');
 
-                    $('#value').val(_response.data.value);
-                    $('#value').attr('readonly', 'readonly');
-                    $('#icon').val(_response.data.icon);
-                    $('#div_show_icon').html('<i class="ml-1 '+_response.data.icon+'" aria-hidden="true"></i>');
+                    $('#value_seccion').val(_response.data.value);
+                    $('#value_seccion').attr('readonly', 'readonly');
+                    $('#icon_seccion').val(_response.data.icon);
+                    $('#div_show_icon_seccion').html('<i class="ml-1 '+_response.data.icon+'" aria-hidden="true"></i>');
                     $('#sistema').val(_response.data.sistema);
                 }
             }
@@ -259,7 +259,7 @@
     function btn_update_seccion(){
         let _ls_id = localstorage_function('get', 'LS_NAVIGATION_DATA');
         let _next = form_validation({
-            item: ['value', 'icon', 'sistema']
+            item: ['value_seccion', 'icon_seccion', 'sistema']
         });
 
         if(_next != ""){
@@ -284,7 +284,7 @@
                         $('#datatable-menu-list').html(_response.view);                    
                         form_clear('form-create-seccion');                 
                         $('#value').removeAttr('readonly');  
-                        $('#div_show_icon').html(""); 
+                        $('#div_show_icon_seccion').html(""); 
                     }
                 }
             });
