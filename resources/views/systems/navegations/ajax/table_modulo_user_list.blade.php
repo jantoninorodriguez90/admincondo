@@ -1,24 +1,20 @@
-<x-data-table id="datatable-modulo">            
+<x-data-table id="datatable-modulo-user">            
     <x-slot:title>modulo list</x-slot:title>
     <x-slot:thead>
         <tr>
             <th>ID</th>
-            <th>SIS_SECCION_ID</th>
-            <th>VALUE</th>
-            <th>ICON</th>
-            <th>RUTA</th>
+            <th>USUARIO_ID</th>
+            <th>SIS_MODULO_ID</th>
             <th>ACTIONS</th>
         </tr>
     </x-slot:thead>
-    @foreach ($modulos as $item)
+    @foreach ($modulos_usuarios as $item)
         <tr>
             <td>{{ $item->id }}</td>
-            <td>{{ $item->sis_seccion_id }}</td>
-            <td>{{ $item->value }}</td>
-            <td class="text-center"><i class="{{ $item->icon }}" aria-hidden="true"></i></td>
-            <td>{{ $item->ruta }}</td>
+            <td>{{ $item->usuario_id }}</td>
+            <td>{{ $item->sis_modulo_id }}</td>
             <td class="text-center">
-                <button type="button" class="btn btn-xs btn-info" onclick="btn_edit_modulo({{ $item->id }})"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn-xs btn-info" onclick="btn_edit_modulo_user({{ $item->id }})"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button>
                 {{-- <x-modal type="lg" class="btn btn-xs btn-info" onclick="btn_assign({{ $item->id }})">
                     <x-slot:button><i class="fa fa-user-secret" aria-hidden="true"></i></x-slot:button>    
                     <x-slot:title><strong>USER: </strong></x-slot:title>                    
@@ -27,9 +23,9 @@
                     </x-slot:button_success>
                 </x-modal> --}}
                 @if ($item->status_alta == 1)
-                    <button type="button" class="btn btn-xs btn-success" onclick="btn_delete_modulo({{ $item->id }})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-xs btn-success" onclick="btn_delete_modulo_user({{ $item->id }})"><i class="fa fa-check" aria-hidden="true"></i></button>
                 @else
-                    <button type="button" class="btn btn-xs btn-danger" onclick="btn_delete_modulo({{ $item->id }})"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-xs btn-danger" onclick="btn_delete_modulo_user({{ $item->id }})"><i class="fa fa-times" aria-hidden="true"></i></button>
                 @endif                        
             </td>
         </tr>

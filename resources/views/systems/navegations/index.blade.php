@@ -164,7 +164,7 @@
                     <td class="text-center"><i class="{{ $item->icon }}" aria-hidden="true"></i></td>
                     <td>{{ $item->ruta }}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-xs btn-info" onclick="btn_edit_seccion({{ $item->id }})"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-xs btn-info" onclick="btn_edit_modulo({{ $item->id }})"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button>
                         {{-- <x-modal type="lg" class="btn btn-xs btn-info" onclick="btn_assign({{ $item->id }})">
                             <x-slot:button><i class="fa fa-user-secret" aria-hidden="true"></i></x-slot:button>    
                             <x-slot:title><strong>USER: </strong></x-slot:title>                    
@@ -173,9 +173,85 @@
                             </x-slot:button_success>
                         </x-modal> --}}
                         @if ($item->status_alta == 1)
-                            <button type="button" class="btn btn-xs btn-success" onclick="btn_delete_seccion({{ $item->id }})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-xs btn-success" onclick="btn_delete_modulo({{ $item->id }})"><i class="fa fa-check" aria-hidden="true"></i></button>
                         @else
-                            <button type="button" class="btn btn-xs btn-danger" onclick="btn_delete_seccion({{ $item->id }})"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-xs btn-danger" onclick="btn_delete_modulo({{ $item->id }})"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        @endif                        
+                    </td>
+                </tr>
+            @endforeach
+        </x-data-table>
+    </div>
+</x-card>
+
+<x-card>
+    <x-slot:title>FORM USER ASSGIGN TO MODULE</x-slot:title>
+    <form class="form-horizontal form-false" method="POST" action="#" id="form-create-modulo-user">
+        @csrf
+        <div class="card-body">
+            <div class="form-group row">
+                <label for="usuario_id" class="col-sm-2 col-form-label">LIST USERS</label>
+                <div class="col-sm-10">
+                    <select class="custom-select form-control-border border-width-2" id="usuario_id" name="usuario_id">
+                        <option value="">choose one...</option>
+                        @foreach ($usuarios as $item)  
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>                    
+                    <div id="message_error_usuario_id" class="invalid-feedback"></div>
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label for="sis_modulo_id" class="col-sm-2 col-form-label">LIST MODULES</label>
+                <div class="col-sm-10">
+                    <select class="custom-select form-control-border border-width-2" id="sis_modulo_id" name="sis_modulo_id">
+                        <option value="">choose one...</option>
+                        @foreach ($modulos_activos as $item)  
+                            <option value="{{ $item->id }}">{{ $item->value }}</option>
+                        @endforeach
+                    </select>                    
+                    <div id="message_error_sis_modulo_id" class="invalid-feedback"></div>
+                </div>
+            </div> 
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <button type="button" class="btn btn-info float-right" onclick="btn_create_modulo_user()" id="btnCreateModuloUser">CREATE</button>
+            <button type="button" class="btn btn-info float-right" onclick="btn_update_modulo_user()" id="btnUpdateModuloUser">UPDATE</button>
+            {{-- <button type="button" class="btn btn-default float-right">Cancel</button> --}}
+        </div>
+        <!-- /.card-footer -->
+    </form>
+
+    <div id="datatable-modulo-user-list" class="mt-2">     
+        <x-data-table id="datatable-modulo-user">            
+            <x-slot:title>modulo list</x-slot:title>
+            <x-slot:thead>
+                <tr>
+                    <th>ID</th>
+                    <th>USUARIO_ID</th>
+                    <th>SIS_MODULO_ID</th>
+                    <th>ACTIONS</th>
+                </tr>
+            </x-slot:thead>
+            @foreach ($modulos_usuarios as $item)
+                <tr>
+                    <td>{{ $item->id }}</td>
+                    <td>{{ $item->usuario_id }}</td>
+                    <td>{{ $item->sis_modulo_id }}</td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-xs btn-info" onclick="btn_edit_modulo_user({{ $item->id }})"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button>
+                        {{-- <x-modal type="lg" class="btn btn-xs btn-info" onclick="btn_assign({{ $item->id }})">
+                            <x-slot:button><i class="fa fa-user-secret" aria-hidden="true"></i></x-slot:button>    
+                            <x-slot:title><strong>USER: </strong></x-slot:title>                    
+                            <x-slot:button_success>
+                                <button type="button" class="btn btn-primary" onclick="btn_assign_role({{ $item->id }})" id="btnCreate">ASSIGN</button>
+                            </x-slot:button_success>
+                        </x-modal> --}}
+                        @if ($item->status_alta == 1)
+                            <button type="button" class="btn btn-xs btn-success" onclick="btn_delete_modulo_user({{ $item->id }})"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        @else
+                            <button type="button" class="btn btn-xs btn-danger" onclick="btn_delete_modulo_user({{ $item->id }})"><i class="fa fa-times" aria-hidden="true"></i></button>
                         @endif                        
                     </td>
                 </tr>
@@ -189,10 +265,10 @@
 <script>
     $(document).ready(function (){
         localstorage_function('remove', 'LS_NAVIGATION_DATA');    
-        $('#btnUpdate, #btnUpdateModulo').css('display', 'none');
+        $('#btnUpdate, #btnUpdateModulo, #btnUpdateModuloUser').css('display', 'none');
 
         input_validation({
-            item: ['value_seccion', 'icon_seccion', 'sistema', 'sis_seccion_id', 'value_modulo', 'icon_modulo', 'ruta']
+            item: ['value_seccion', 'icon_seccion', 'sistema', 'sis_seccion_id', 'value_modulo', 'icon_modulo', 'ruta', 'sis_modulo_id', 'usuario_id']
         });
         
         show_icon({
@@ -345,19 +421,20 @@
     function btn_edit_modulo(_id){
         ajax_function_object({
             method: 'GET',
-            route: `${_id}/seccion/edit`,
+            route: `${_id}/modulo/edit`,
             data: {},
             function: (_response) => {
                 if(_response.next){
                     localstorage_function('set', 'LS_NAVIGATION_DATA', _response.data.id);
-                    $('#btnCreate').css('display', 'none');
-                    $('#btnUpdate').css('display', 'inline');
+                    $('#btnCreateModulo').css('display', 'none');
+                    $('#btnUpdateModulo').css('display', 'inline');
 
-                    $('#value').val(_response.data.value);
-                    $('#value').attr('readonly', 'readonly');
-                    $('#icon').val(_response.data.icon);
-                    $('#div_show_icon').html('<i class="ml-1 '+_response.data.icon+'" aria-hidden="true"></i>');
-                    $('#sistema').val(_response.data.sistema);
+                    $('#value_modulo').val(_response.data.value);
+                    $('#value_modulo').attr('readonly', 'readonly');
+                    $('#icon_modulo').val(_response.data.icon);
+                    $('#div_show_icon_modulo').html('<i class="ml-1 '+_response.data.icon+'" aria-hidden="true"></i>');
+                    $('#ruta').val(_response.data.ruta);
+                    $('#sis_seccion_id').val(_response.data.sis_seccion_id);
                 }
             }
         });
@@ -366,21 +443,21 @@
     function btn_update_modulo(){
         let _ls_id = localstorage_function('get', 'LS_NAVIGATION_DATA');
         let _next = form_validation({
-            item: ['value', 'icon', 'sistema']
+            item: ['value_modulo', 'icon_modulo', 'sis_seccion_id', 'ruta']
         });
 
         if(_next != ""){
             ajax_function_object({
                 method: 'PUT',
-                route: `${_ls_id}/seccion`,
+                route: `${_ls_id}/modulo`,
                 data: {
-                    form: $('#form-create-seccion')
+                    form: $('#form-create-modulo')
                 },
                 function: (_response) => {
                     if(_response.next){
                         localstorage_function('remove', 'LS_NAVIGATION_DATA');
-                        $('#btnCreate').css('display', 'inline');
-                        $('#btnUpdate').css('display', 'none');
+                        $('#btnCreateModulo').css('display', 'inline');
+                        $('#btnUpdateModulo').css('display', 'none');
                     
                         bootbox_alert({
                             title: 'informative',
@@ -388,10 +465,10 @@
                             type: 'success'
                         });
 
-                        $('#datatable-menu-list').html(_response.view);                    
-                        form_clear('form-create-seccion');                 
-                        $('#value').removeAttr('readonly');  
-                        $('#div_show_icon').html(""); 
+                        $('#datatable-modulo-list').html(_response.view);                    
+                        form_clear('form-create-modulo');                 
+                        $('#value_modulo').removeAttr('readonly');  
+                        $('#div_show_icon_modulo').html(""); 
                     }
                 }
             });
@@ -402,8 +479,8 @@
     function btn_delete_modulo(_id){        
         ajax_function_object({
             method: 'DELETE',
-            route: `${_id}/seccion`,
-            data: { form: $('#form-create-seccion') },
+            route: `${_id}/modulo`,
+            data: { form: $('#form-create-modulo') },
             function: (_response) => {
                 if(_response.next){                    
                     bootbox_alert({
@@ -412,7 +489,108 @@
                         type: 'warning'
                     });
 
-                    $('#datatable-menu-list').html(_response.view);       
+                    $('#datatable-modulo-list').html(_response.view);       
+                }                
+            }
+        });
+    }
+     // ##########################################################################################
+    // ##########################################################################################
+    // FUNCIONES DE MODULOS USUARIOS
+    function btn_create_modulo_user(){
+        let _next = form_validation({
+            item: ['usuario_id', 'sis_modulo_id']
+        });
+
+        if(_next){
+            ajax_function_object({
+                method: 'POST',
+                route: `{{ route('navegations.store') }}`,
+                data: {
+                    form: $('#form-create-modulo-user')
+                },
+                function: (_response) => {
+                    if(_response.next){
+                        bootbox_alert({
+                            title: 'informative',
+                            message: _response.message,
+                            type: 'success'
+                        });
+                                            
+                        form_clear('form-create-modulo-user');     
+                        $('#datatable-modulo-user-list').html(_response.view);       
+                    }
+                }
+            });
+        }        
+    } 
+
+    function btn_edit_modulo_user(_id){
+        ajax_function_object({
+            method: 'GET',
+            route: `${_id}/edit`,
+            data: {},
+            function: (_response) => {
+                if(_response.next){
+                    localstorage_function('set', 'LS_NAVIGATION_DATA', _response.data.id);
+                    $('#btnCreateModuloUser').css('display', 'none');
+                    $('#btnUpdateModuloUser').css('display', 'inline');
+
+                    $('#usuario_id').val(_response.data.usuario_id);
+                    $('#sis_modulo_id').val(_response.data.sis_modulo_id);
+                }
+            }
+        });
+    }
+
+    function btn_update_modulo_user(){
+        let _ls_id = localstorage_function('get', 'LS_NAVIGATION_DATA');
+        let _next = form_validation({
+            item: ['usuario_id', 'sis_modulo_id']
+        });
+
+        if(_next != ""){
+            ajax_function_object({
+                method: 'PUT',
+                route: `${_ls_id}`,
+                data: {
+                    form: $('#form-create-modulo-user')
+                },
+                function: (_response) => {
+                    if(_response.next){
+                        localstorage_function('remove', 'LS_NAVIGATION_DATA');
+                        $('#btnCreateModuloUser').css('display', 'inline');
+                        $('#btnUpdateModuloUser').css('display', 'none');
+                    
+                        bootbox_alert({
+                            title: 'informative',
+                            message: _response.message,
+                            type: 'success'
+                        });
+
+                        $('#datatable-modulo-user-list').html(_response.view);                    
+                        form_clear('form-create-modulo-user');         
+                    }
+                }
+            });
+        }
+
+    }
+
+    function btn_delete_modulo_user(_id){        
+        ajax_function_object({
+            method: 'DELETE',
+            route: `${_id}`,
+            data: { form: $('#form-create-modulo-user') },
+            function: (_response) => {
+                if(_response.next){                    
+                    bootbox_alert({
+                        title: 'informative',
+                        message: _response.message,
+                        type: 'warning'
+                    });
+
+                    $('#datatable-modulo-user-list').html(_response.view);       
                 }                
             }
         });

@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 <x-card>
     <x-slot:title>FORM ROLE</x-slot:title>
     <form class="form-horizontal form-false" method="POST" action="#" id="form-create">
@@ -10,10 +9,8 @@
             <div class="form-group row">
                 <label for="name" class="col-sm-2 col-form-label">ROLE</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="ROLE NAME">
-                    @error('name')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <input type="text" class="form-control" id="name" name="name" placeholder="ROLE NAME">
+                    <div id="message_error_name" class="invalid-feedback"></div>
                 </div>
             </div>
             <div class="form-group row">
@@ -84,34 +81,44 @@
         localstorage_function('remove', 'LS_ROLE_DATA');
         $('#btnUpdate').css('display', 'none');
 
+        input_validation({
+            item: ['name']
+        });
+
         // $.LoadingOverlay("show");       
     });
 
     function btn_create(){
-        ajax_function_object({
-            method: 'POST',
-            route: `{{ route('roles.store') }}`,
-            data: {
-                form: $('#form-create')
-            },
-            function: (_response) => {
-                if(_response.next){
-                    bootbox_alert({
-                        title: 'informative',
-                        message: _response.message,
-                        type: 'success'
-                    });
-                    $('#datatable-list').html(_response.view);                    
-                    form_clear('form-create');        
-                }
-            }
+        let _next = form_validation({
+            item: ['name']
         });
+
+        if(_next){
+            ajax_function_object({
+                method: 'POST',
+                route: `{{ route('roles.store') }}`,
+                data: {
+                    form: $('#form-create')
+                },
+                function: (_response) => {
+                    if(_response.next){
+                        bootbox_alert({
+                            title: 'informative',
+                            message: _response.message,
+                            type: 'success'
+                        });
+                        $('#datatable-list').html(_response.view);                    
+                        form_clear('form-create');        
+                    }
+                }
+            });
+        }        
     }    
 
     function btn_edit(_id){
         ajax_function_object({
             method: 'GET',
-            route: `roles/${_id}/edit`,
+            route: `${_id}/edit`,
             data: {},
             function: (_response) => {
                 if(_response.next){
@@ -137,11 +144,14 @@
 
     function btn_update(){
         let _ls_id = localstorage_function('get', 'LS_ROLE_DATA');
+        let _next = form_validation({
+            item: ['name']
+        });
 
-        if(_ls_id != ""){
+        if(_next){
             ajax_function_object({
                 method: 'PUT',
-                route: `roles/${_ls_id}`,
+                route: `${_ls_id}`,
                 data: {
                     form: $('#form-create')
                 },
@@ -169,7 +179,7 @@
     function btn_delete(_id){        
         ajax_function_object({
             method: 'DELETE',
-            route: `roles/${_id}`,
+            route: `${_id}`,
             data: { form: $('#form-create') },
             function: (_response) => {
                 if(_response.next){                    
@@ -188,7 +198,7 @@
     function btn_show(_id){
         ajax_function_object({
             method: 'GET',
-            route: `roles/${_id}`,
+            route: `${_id}`,
             data: { },
             function: (_response) => {
                 if(_response.next){   

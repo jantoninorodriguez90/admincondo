@@ -72,7 +72,7 @@ class RoleController extends Controller
         $role = Role::find($id);
         if(!empty($role)){
             $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
-            ->where("role_has_permissions.role_id",$id)
+            ->where("role_has_permissions.role_id", $id)
             ->get();
             $response['data'] = $role;
             $response['next'] = true;

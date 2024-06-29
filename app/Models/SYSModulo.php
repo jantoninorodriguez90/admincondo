@@ -11,4 +11,9 @@ class SYSModulo extends Model
     protected $table = 'sis_modulos';
     
     protected $fillable = ['sis_seccion_id', 'value', 'icon', 'ruta', 'order', 'status_alta'];
+    
+    public function seccion() 
+    {
+        return $this->belongsTo(SYSSeccion::class, 'id', 'sis_seccion_id');      
+    }
 }

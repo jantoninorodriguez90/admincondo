@@ -93,13 +93,28 @@
         localstorage_function('remove', 'LS_USER_DATA');
         $('#btnUpdate').css('display', 'none');
 
-        input_validation([
-            item: ['name', 'email', 'password', 'confirm']
-        ]);
+        input_validation({
+            item: ['name', 'email', 'password', 'password_confirmation']
+        });
+
+        $('#password_confirmation').on("input", function () {
+            if ($(this).val() == $('#password').val()) {
+                $(this).removeClass("is-invalid").addClass("is-valid");
+                $('#message_error_password_confirmation').css('display', 'none');
+            } else {
+                $(this).addClass('is-invalid');
+                $('#message_error_password_confirmation').css('display', 'inline');
+                $('#message_error_password_confirmation').html('You must type a the same password.');
+            }
+        });
     });
 
     function btn_create(){
-        if(form_validation()){
+        let _next = form_validation({
+            item: ['name', 'email', 'password', 'password_confirmation']
+        });
+
+        if(_next){
             ajax_function_object({
                 method: 'POST',
                 route: `{{ route('users.store') }}`,
@@ -124,7 +139,7 @@
     function btn_edit(_id){
         ajax_function_object({
             method: 'GET',
-            route: `users/${_id}/edit`,
+            route: `${_id}/edit`,
             data: {},
             function: (_response) => {
                 if(_response.next){
@@ -142,11 +157,14 @@
 
     function btn_update(){
         let _ls_id = localstorage_function('get', 'LS_USER_DATA');
+        let _next = form_validation({
+            item: ['name', 'email', 'password', 'password_confirmation']
+        });
 
-        if(_ls_id != ""){
+        if(_ls_id){
             ajax_function_object({
                 method: 'PUT',
-                route: `users/${_ls_id}`,
+                route: `${_ls_id}`,
                 data: {
                     form: $('#form-create')
                 },
@@ -175,7 +193,7 @@
     function btn_delete(_id){        
         ajax_function_object({
             method: 'DELETE',
-            route: `users/${_id}`,
+            route: `${_id}`,
             data: { form: $('#form-create') },
             function: (_response) => {
                 if(_response.next){                    
@@ -194,7 +212,7 @@
     function btn_assign(_id){        
         ajax_function_object({
             method: 'GET',
-            route: `users/${_id}/assign`,
+            route: `${_id}/assign`,
             data: { },
             function: (_response) => {
                 if(_response.next){   
@@ -215,7 +233,7 @@
         if($('#role option:selected').val() != ""){
             ajax_function_object({
                 method: 'PUT',
-                route: `users/${_id}/assign`,
+                route: `${_id}/assign`,
                 data: {
                     form: $('#form-assign')
                 },
@@ -235,18 +253,18 @@
         
     }
 
-    function form_validation(){
-        if($('#name').val() != "" && $('#email').val() != "" && $('#password').val() != ""){            
-            if($('#password').val() == $('#password_confirmation').val()) return true;                     
-        }else{
-            $("#name, #email, #password").removeClass("is-valid").addClass("is-invalid");
-            $('#message_error_name, #message_error_email, #message_error_password').css('display', 'inline');
-            $('#message_error_name').html('You must type a name.');
-            $('#message_error_email').html('You must type an email.');
-            $('#message_error_password').html('You must type a password.');
-        }
+    // function form_user_validation(){
+    //     if($('#name').val() != "" && $('#email').val() != "" && $('#password').val() != ""){            
+    //         if($('#password').val() == $('#password_confirmation').val()) return true;                     
+    //     }else{
+    //         $("#name, #email, #password").removeClass("is-valid").addClass("is-invalid");
+    //         $('#message_error_name, #message_error_email, #message_error_password').css('display', 'inline');
+    //         $('#message_error_name').html('You must type a name.');
+    //         $('#message_error_email').html('You must type an email.');
+    //         $('#message_error_password').html('You must type a password.');
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 </script>
 @endsection

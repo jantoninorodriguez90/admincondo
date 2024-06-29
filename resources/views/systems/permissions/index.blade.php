@@ -9,10 +9,8 @@
                 <div class="form-group row">
                     <label for="name" class="col-sm-2 col-form-label">PERMISSION</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="PERMISSION NAME">
-                        @error('name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <input type="text" class="form-control" id="name" name="name" placeholder="PERMISSION NAME">
+                        <div id="message_error_name" class="invalid-feedback"></div>
                     </div>
                 </div>
             </div>
@@ -67,34 +65,44 @@
         localstorage_function('remove', 'LS_PERMISSION_DATA');
         $('#btnUpdate').css('display', 'none');
 
+        input_validation({
+            item: ['name']
+        });
+
         // $.LoadingOverlay("show");       
     });
 
     function btn_create(){
-        ajax_function_object({
-            method: 'POST',
-            route: `{{ route('permissions.store') }}`,
-            data: {
-                form: $('#form-permission-create')
-            },
-            function: (_response) => {
-                if(_response.next){
-                    bootbox_alert({
-                        title: 'informative',
-                        message: _response.message,
-                        type: 'success'
-                    });
-                    $('#datatable-list').html(_response.view);                    
-                    $('#form-permission-create')[0].reset();
-                }
-            }
+        let _next = form_validation({
+            item: ['name']
         });
+
+        if(_next){
+            ajax_function_object({
+                method: 'POST',
+                route: `{{ route('permissions.store') }}`,
+                data: {
+                    form: $('#form-permission-create')
+                },
+                function: (_response) => {
+                    if(_response.next){
+                        bootbox_alert({
+                            title: 'informative',
+                            message: _response.message,
+                            type: 'success'
+                        });
+                        $('#datatable-list').html(_response.view);                    
+                        $('#form-permission-create')[0].reset();
+                    }
+                }
+            });
+        }
     }    
 
     function btn_edit(_id){
         ajax_function_object({
             method: 'GET',
-            route: `permissions/${_id}/edit`,
+            route: `${_id}/edit`,
             data: {},
             function: (_response) => {
                 if(_response.next){
@@ -110,11 +118,14 @@
 
     function btn_update(){
         let _ls_id = localstorage_function('get', 'LS_PERMISSION_DATA');
+        let _next = form_validation({
+            item: ['name']
+        });
 
-        if(_ls_id != ""){
+        if(_next){
             ajax_function_object({
                 method: 'PUT',
-                route: `permissions/${_ls_id}`,
+                route: `${_ls_id}`,
                 data: {
                     form: $('#form-permission-create')
                 },
@@ -142,7 +153,7 @@
     function btn_delete(_id){        
         ajax_function_object({
             method: 'DELETE',
-            route: `permissions/${_id}`,
+            route: `${_id}`,
             data: { form: $('#form-permission-create') },
             function: (_response) => {
                 if(_response.next){                    
