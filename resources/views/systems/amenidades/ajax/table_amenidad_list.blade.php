@@ -1,7 +1,7 @@
 <x-data-table>
     <x-slot:title>permisons list</x-slot:title>
     {{-- <x-slot:navigate>
-        <a href="{{ route('permissions.create') }}" class="btn btn-info float-right">NEW PERMISSION</a>
+        <a href="{{ route('amenidades.create') }}" class="btn btn-info float-right">NEW PERMISSION</a>
     </x-slot:navigate> --}}
     <x-slot:thead>
         <tr>
@@ -12,7 +12,7 @@
             <th>ACTIONS</th>
         </tr>
     </x-slot:thead>
-    @foreach ($data as $item)
+    @foreach ($data  as $item)
         <tr>
             <td>{{ $item->id }}</td>
             <td>{{ $item->name }}</td>

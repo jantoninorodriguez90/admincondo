@@ -385,5 +385,12 @@ $(document).ready(function () {
         })
     }
 
+    window.form_clear = function (_element_id) {
+        $('#' + _element_id)[0].reset();
+        document.querySelectorAll('#' + _element_id + ' input[type=checkbox]').forEach(function (checkElement) {
+            checkElement.checked = false;
+        });
+    }
+
 });
 
