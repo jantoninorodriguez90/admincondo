@@ -1,19 +1,5 @@
 <?php
 
-function breadcrumb(){
-    $route = Request::route()->getName();
-
-    switch (gettype($route)) {
-        case 'string':
-            return ['HOME', 'principal'];
-            break;
-        
-        default:
-            return explode('.', $route);
-            break;
-    }
-}
-
 function limpiar_cadena_texto($cadena){
     //Reemplazamos la A y a
     $cadena = str_replace(
@@ -54,6 +40,7 @@ function limpiar_cadena_texto($cadena){
     // );
 
     //SEPARAMOS LAS CADENAS EN UN ARRAY - LIMPIAMOS ESPACIOS EN BLANCOS
+    $new_cadena = null;
     $tmp_separador = explode(" ", $cadena);
     foreach ($tmp_separador as $key => $value) {
         if($value != "") $tmp_string[] = $value;

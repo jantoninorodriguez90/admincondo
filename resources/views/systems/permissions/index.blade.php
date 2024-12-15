@@ -102,7 +102,7 @@
     function btn_edit(_id){
         ajax_function_object({
             method: 'GET',
-            route: `${_id}/edit`,
+            route: `permissions/${_id}/edit`,
             data: {},
             function: (_response) => {
                 if(_response.next){
@@ -125,7 +125,7 @@
         if(_next){
             ajax_function_object({
                 method: 'PUT',
-                route: `${_ls_id}`,
+                route: `permissions/${_ls_id}`,
                 data: {
                     form: $('#form-permission-create')
                 },
@@ -153,7 +153,7 @@
     function btn_delete(_id){        
         ajax_function_object({
             method: 'DELETE',
-            route: `${_id}`,
+            route: `permissions/${_id}`,
             data: { form: $('#form-permission-create') },
             function: (_response) => {
                 if(_response.next){                    

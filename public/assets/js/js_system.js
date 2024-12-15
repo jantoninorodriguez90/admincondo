@@ -5,6 +5,29 @@ $(document).ready(function () {
         }
     });
 
+    $('#search_menu').change(function () {
+        let _url = $('#search_menu option:selected').val();
+
+        if (_url != "") {
+            window.location.href = _url;
+        }
+    });
+
+    $('.selectpicker').select2();
+
+    $(".email").on("input", function () {
+        const email = $(this).val();
+        const parent = $(this).closest(".form-group");
+
+        if (validateEmail(email)) {
+            // Email válido: Agregar clase de éxito
+            parent.removeClass("has-error").addClass("has-success");
+        } else {
+            // Email inválido: Agregar clase de error
+            parent.removeClass("has-success").addClass("has-error");
+        }
+    });
+
     // $('.loader').click(function () {
     // 	// $.LoadingOverlay("show");
     // 	$.LoadingOverlay("show", {
@@ -19,25 +42,6 @@ $(document).ready(function () {
     // 		//fade  : [2000, 1000]
     // 	});
     // });
-
-
-    window.get_routeurl = function (url = false) {
-        var pathname = window.location.href;
-        var res_split = pathname.split("/", 6);
-        var url_split = res_split[0] + "//" + res_split[2] + "/" + res_split[3] + "/";
-        var url_controller = res_split[4];
-        var url_function = res_split[5];
-
-        if (url == 1) {
-            return url_controller;
-        } else if (url == 2) {
-            return url_function;
-        } else if (url == 3) {
-            return url_split;
-        } else {
-            return pathname;
-        }
-    }
 
     window.aleatorio = function (min, max) {
         var num = Math.floor(Math.random() * (max - min + 1)) + min; return num;
@@ -142,6 +146,14 @@ $(document).ready(function () {
             start -= 3;
         }
         return (parts.length == 3 ? '-' : '') + result;
+    }
+
+    window.parseAndRound = function (value) {
+        const parsedValue = parseFloat(value);
+        if (isNaN(parsedValue)) {
+            return 0; // Devolver 0 si el valor no es un número
+        }
+        return parseFloat(parsedValue.toFixed(2)); // Redondear a 2 decimales y devolver como número
     }
 
     window.enviar_imagen = function (item, ruta) {
@@ -268,6 +280,20 @@ $(document).ready(function () {
         return re.test(String(email).toLowerCase());
     }
 
+    window.get_param = function (_data = { search: null }) {
+        // Creamos la instancia
+        const _value = window.location.search;
+        const _urlParams = new URLSearchParams(_value);
+        // Obtenemos el valor
+        let _result = _urlParams.get(_data.search);
+        // Si se solicita eliminar el parámetro
+        _urlParams.delete(_data.search);
+        const newUrl = `${window.location.pathname}?${_urlParams.toString()}`;
+        window.history.replaceState(null, '', newUrl);
+
+        return _result;
+    }
+
     window.localstorage_function = function (_tipo, _variable, _object = {}) {
         switch (_tipo.toLowerCase()) {
             case 'get':
@@ -382,7 +408,33 @@ $(document).ready(function () {
             icon: _data.icon,
             subtitle: _data.subtitle,
             class: _type
-        })
+        });
+    }
+
+    window.bootbox = function (_data = { type: 'alert', title: '', message: '', function: function () { } }) {
+        switch (_data.type) {
+            case 'alert':
+
+                break;
+            case 'confirm':
+                bootbox.confirm({
+                    message: "This is a confirm with custom button text and color! Do you like it?",
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-primary'
+                        }
+                    },
+                    callback: function (result) {
+                        console.log('This was logged in the callback: ' + result);
+                    }
+                });
+                break;
+        }
     }
 
     window.form_clear = function (_element_id) {

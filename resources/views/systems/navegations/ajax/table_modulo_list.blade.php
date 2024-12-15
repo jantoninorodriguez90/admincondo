@@ -3,8 +3,8 @@
     <x-slot:thead>
         <tr>
             <th>ID</th>
-            <th>SIS_SECCION_ID</th>
-            <th>VALUE</th>
+            <th>MENU</th>
+            <th>MODULO</th>
             <th>ICON</th>
             <th>RUTA</th>
             <th>ACTIONS</th>
@@ -13,7 +13,7 @@
     @foreach ($modulos as $item)
         <tr>
             <td>{{ $item->id }}</td>
-            <td>{{ $item->sis_seccion_id }}</td>
+            <td>{{ $item->seccion->value }}</td>
             <td>{{ $item->value }}</td>
             <td class="text-center"><i class="{{ $item->icon }}" aria-hidden="true"></i></td>
             <td>{{ $item->ruta }}</td>

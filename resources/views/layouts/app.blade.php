@@ -53,11 +53,17 @@
         <!-- AdminLTE for demo purposes -->
         {{-- <script src="{{ asset('assets/adminlte/dist/js/demo.js') }}"></script> --}}
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="{{ asset('assets/adminlte/dist/js/pages/dashboard.js') }}"></script>
+        {{-- <script src="{{ asset('assets/adminlte/dist/js/pages/dashboard.js') }}"></script> --}}
         <!-- SweetAlert2 -->
         <script src="{{ asset('assets/adminlte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
         <!-- Toastr -->
         <script src="{{ asset('assets/adminlte/plugins/toastr/toastr.min.js') }}"></script>
+        <!-- Select2 -->
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        {{-- Bootbox Alert --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"></script>
         @auth
             <script src="{{ asset('assets/js/js_system.js') }}"></script>  
             <!-- Overlay js-->
@@ -90,6 +96,12 @@
         <link rel="stylesheet" href="{{ asset('assets/adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
         <!-- Toastr -->
         <link rel="stylesheet" href="{{ asset('assets/adminlte/plugins/toastr/toastr.min.css') }}">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+        <!-- Or for RTL support -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
         @auth
             @yield('style')
         @endauth

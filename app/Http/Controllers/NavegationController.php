@@ -20,9 +20,9 @@ class NavegationController extends Controller
         $secciones = SYSSeccion::all();
         $secciones_activos = SYSSeccion::where('status_alta', 1)->get();
         $modulos = SYSModulo::all();
-        $modulos_activos = SYSModulo::where('status_alta', 1)->get();
+        $modulos_activos = SYSModulo::with('seccion')->where('status_alta', 1)->get(); 
         $usuarios = User::where('status_alta', 1)->get();
-        $modulos_usuarios = SYSModuloUsuario::all();
+        $modulos_usuarios = SYSModuloUsuario::with('modulo')->with('user')->get();
         
         return view('systems.navegations.index', [
             'secciones' => $secciones, 'secciones_activos' => $secciones_activos,
@@ -281,7 +281,7 @@ class NavegationController extends Controller
         if(SYSModuloUsuario::where('id', $id)->update($request->except(['_token']))){
             $response['message'] = 'The registry was updated successfully.';
             $response['next'] = true;
-            $response['view'] = view('systems.navegations.ajax.table_modulo_user_list', ['modulos_usuarios' => SYSModuloUsuario::all()])->render();
+            $response['view'] = view('systems.navegations.ajax.table_modulo_user_list', ['modulos_usuarios' => SYSModuloUsuario::with('modulo')->with('user')->get()])->render();
         }
 
         return json_encode($response);
@@ -311,7 +311,7 @@ class NavegationController extends Controller
             if(SYSModuloUsuario::where('id', $id)->update(['status_alta' => $new_status])){                
                 $response['message'] = $new_message;
                 $response['next'] = true;
-                $response['view'] = view('systems.navegations.ajax.table_modulo_user_list', ['modulos_usuarios' => SYSModuloUsuario::all()])->render();
+                $response['view'] = view('systems.navegations.ajax.table_modulo_user_list', ['modulos_usuarios' => SYSModuloUsuario::with('modulo')->with('user')->get()])->render();
             }
         }
 

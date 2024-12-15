@@ -14,6 +14,6 @@ class SYSModulo extends Model
     
     public function seccion() 
     {
-        return $this->belongsTo(SYSSeccion::class, 'id', 'sis_seccion_id');      
+        return $this->belongsTo(SYSSeccion::class, 'sis_seccion_id', 'id');      
     }
 }

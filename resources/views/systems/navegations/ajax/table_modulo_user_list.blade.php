@@ -3,16 +3,16 @@
     <x-slot:thead>
         <tr>
             <th>ID</th>
-            <th>USUARIO_ID</th>
-            <th>SIS_MODULO_ID</th>
+            <th>USUARIO</th>
+            <th>MODULO</th>
             <th>ACTIONS</th>
         </tr>
     </x-slot:thead>
     @foreach ($modulos_usuarios as $item)
         <tr>
             <td>{{ $item->id }}</td>
-            <td>{{ $item->usuario_id }}</td>
-            <td>{{ $item->sis_modulo_id }}</td>
+            <td>{{ $item->user->name }}</td>
+            <td>{{ $item->modulo->value }}</td>
             <td class="text-center">
                 <button type="button" class="btn btn-xs btn-info" onclick="btn_edit_modulo_user({{ $item->id }})"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button>
                 {{-- <x-modal type="lg" class="btn btn-xs btn-info" onclick="btn_assign({{ $item->id }})">

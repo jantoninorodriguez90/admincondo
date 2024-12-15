@@ -118,7 +118,7 @@
     function btn_edit(_id){
         ajax_function_object({
             method: 'GET',
-            route: `${_id}/edit`,
+            route: `roles/${_id}/edit`,
             data: {},
             function: (_response) => {
                 if(_response.next){
@@ -151,7 +151,7 @@
         if(_next){
             ajax_function_object({
                 method: 'PUT',
-                route: `${_ls_id}`,
+                route: `roles/${_ls_id}`,
                 data: {
                     form: $('#form-create')
                 },
@@ -179,7 +179,7 @@
     function btn_delete(_id){        
         ajax_function_object({
             method: 'DELETE',
-            route: `${_id}`,
+            route: `roles/${_id}`,
             data: { form: $('#form-create') },
             function: (_response) => {
                 if(_response.next){                    
@@ -198,7 +198,7 @@
     function btn_show(_id){
         ajax_function_object({
             method: 'GET',
-            route: `${_id}`,
+            route: `roles/${_id}`,
             data: { },
             function: (_response) => {
                 if(_response.next){   

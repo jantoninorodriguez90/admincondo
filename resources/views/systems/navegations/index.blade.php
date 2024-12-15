@@ -149,8 +149,8 @@
             <x-slot:thead>
                 <tr>
                     <th>ID</th>
-                    <th>SIS_SECCION_ID</th>
-                    <th>VALUE</th>
+                    <th>MENU</th>
+                    <th>MODULO</th>
                     <th>ICON</th>
                     <th>RUTA</th>
                     <th>ACTIONS</th>
@@ -159,7 +159,7 @@
             @foreach ($modulos as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
-                    <td>{{ $item->sis_seccion_id }}</td>
+                    <td>{{ $item->seccion->value }}</td>
                     <td>{{ $item->value }}</td>
                     <td class="text-center"><i class="{{ $item->icon }}" aria-hidden="true"></i></td>
                     <td>{{ $item->ruta }}</td>
@@ -229,16 +229,16 @@
             <x-slot:thead>
                 <tr>
                     <th>ID</th>
-                    <th>USUARIO_ID</th>
-                    <th>SIS_MODULO_ID</th>
+                    <th>USUARIO</th>
+                    <th>MODULO</th>
                     <th>ACTIONS</th>
                 </tr>
             </x-slot:thead>
             @foreach ($modulos_usuarios as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
-                    <td>{{ $item->usuario_id }}</td>
-                    <td>{{ $item->sis_modulo_id }}</td>
+                    <td>{{ $item->user->name }}</td>
+                    <td>{{ $item->modulo->value }}</td>
                     <td class="text-center">
                         <button type="button" class="btn btn-xs btn-info" onclick="btn_edit_modulo_user({{ $item->id }})"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button>
                         {{-- <x-modal type="lg" class="btn btn-xs btn-info" onclick="btn_assign({{ $item->id }})">
@@ -314,7 +314,7 @@
     function btn_edit_seccion(_id){
         ajax_function_object({
             method: 'GET',
-            route: `${_id}/seccion/edit`,
+            route: `navegations/${_id}/seccion/edit`,
             data: {},
             function: (_response) => {
                 if(_response.next){
@@ -341,7 +341,7 @@
         if(_next != ""){
             ajax_function_object({
                 method: 'PUT',
-                route: `${_ls_id}/seccion`,
+                route: `navegations/${_ls_id}/seccion`,
                 data: {
                     form: $('#form-create-seccion')
                 },
@@ -371,7 +371,7 @@
     function btn_delete_seccion(_id){        
         ajax_function_object({
             method: 'DELETE',
-            route: `${_id}/seccion`,
+            route: `navegations/${_id}/seccion`,
             data: { form: $('#form-create-seccion') },
             function: (_response) => {
                 if(_response.next){                    
@@ -421,7 +421,7 @@
     function btn_edit_modulo(_id){
         ajax_function_object({
             method: 'GET',
-            route: `${_id}/modulo/edit`,
+            route: `navegations/${_id}/modulo/edit`,
             data: {},
             function: (_response) => {
                 if(_response.next){
@@ -449,7 +449,7 @@
         if(_next != ""){
             ajax_function_object({
                 method: 'PUT',
-                route: `${_ls_id}/modulo`,
+                route: `navegations/${_ls_id}/modulo`,
                 data: {
                     form: $('#form-create-modulo')
                 },
@@ -479,7 +479,7 @@
     function btn_delete_modulo(_id){        
         ajax_function_object({
             method: 'DELETE',
-            route: `${_id}/modulo`,
+            route: `navegations/${_id}/modulo`,
             data: { form: $('#form-create-modulo') },
             function: (_response) => {
                 if(_response.next){                    
@@ -528,7 +528,7 @@
     function btn_edit_modulo_user(_id){
         ajax_function_object({
             method: 'GET',
-            route: `${_id}/edit`,
+            route: `navegations/${_id}/edit`,
             data: {},
             function: (_response) => {
                 if(_response.next){
@@ -552,7 +552,7 @@
         if(_next != ""){
             ajax_function_object({
                 method: 'PUT',
-                route: `${_ls_id}`,
+                route: `navegations/${_ls_id}`,
                 data: {
                     form: $('#form-create-modulo-user')
                 },
@@ -580,7 +580,7 @@
     function btn_delete_modulo_user(_id){        
         ajax_function_object({
             method: 'DELETE',
-            route: `${_id}`,
+            route: `navegations/${_id}`,
             data: { form: $('#form-create-modulo-user') },
             function: (_response) => {
                 if(_response.next){                    
